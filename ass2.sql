@@ -256,24 +256,11 @@ SET GLOBAL FOREIGN_KEY_CHECKs=0;
 -- ADD VALUE --
 
     -- Company --
-    INSERT INTO Company VALUES
-    ('C100', 'GHOST')
 
     -- Trainee --
 
 
     -- MC --
-    INSERT INTO MC VALUES ('161616161616');
-    INSERT INTO MC VALUES ('171717171717');
-    INSERT INTO MC VALUES ('181818181818');
-    INSERT INTO MC VALUES ('191919191919');
-    -- Mentor --
-    INSERT INTO Mentor VALUES ('')
-    INSERT INTO Mentor VALUES ('')
-    INSERT INTO Mentor VALUES ('')
-    INSERT INTO Mentor VALUES ('')
-    INSERT INTO Mentor VALUES ('')
-    INSERT INTO Mentor VALUES ('')
 
     -- Song --
 
