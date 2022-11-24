@@ -67,7 +67,16 @@ SET GLOBAL FOREIGN_KEY_CHECKs=0;
             Singer_SSN_first_performed numeric(12,0),
             FOREIGN KEY (Singer_SSN_first_performed) references Singer(Ssn) on DELETE set NULL
         );
-        -- Create a trigger latter --
+        -- Create a trigger for auto INCREMENT --
+        DELIMITER //
+        CREATE TRIGGER Song_num_insert
+        BEFORE INSERT ON song
+        FOR EACH ROW
+        BEGIN
+            INSERT INTO song_sequecing VALUES (NULL);
+            SET new.Number = CONCAT("S", LPAD(LAST_INSERT_ID(), 3, '0'));
+        END;//
+        DELIMITER ;
 
     -- Themesong --
     CREATE table ThemeSong(
@@ -182,7 +191,7 @@ SET GLOBAL FOREIGN_KEY_CHECKs=0;
         Syear year not NULL,
         Ep_No int(1) not NULL CHECK (Ep_No>=1 and Ep_no <=5),
         Stage_No INT(3) NOT NULL,
-        Is_Group BOOLEAN, -- Yes: group, No: individual --
+        Is_Group BOOLEAN NOT NULL, -- Yes: group, No: individual --
         Skill int(1) default 4 ,    
         Total_Votes INT, -- Derived attribute --
         Song_ID varchar(5) NOT NULL,
@@ -321,3 +330,4 @@ SET GLOBAL FOREIGN_KEY_CHECKs=0;
 
 
     -- GuestSupportStage --
+    
