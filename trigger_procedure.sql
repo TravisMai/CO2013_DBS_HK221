@@ -251,3 +251,77 @@ END;
 
 //
 DELIMITER ;
+
+
+-- II. Store Procedure/Function --
+-- 1. Create a procedure/function to print list of trainees come to the next episode (or debut if input episode is debut night) --
+
+
+-- Tham khảo code từ: https://stackoverflow.com/questions/15969614/in-sql-how-to-select-the-top-2-rows-for-each-group --
+DELIMITER //
+
+CREATE OR REPLACE PROCEDURE next_ep_list
+(InYear year, InEp int(1))
+BEGIN
+	IF (InEp = 1) THEN
+        SELECT s.Ssn_trainee, AVG(m.Score)
+        FROM stageincludetrainee s JOIN mentorvaluatetrainee m
+        ON s.SYear = m.Syear AND s.Ssn_trainee = m.Ssn_trainee
+        WHERE (s.SYear, s.Ep_No) = (InYear, InEp)
+        GROUP BY s.Ssn_trainee
+        ORDER BY AVG(m.Score) DESC
+        LIMIT 30; 
+    END IF;
+    IF (InEp = 2) THEN
+    	SELECT s.Ssn_trainee, s.No_of_votes
+        FROM stageincludetrainee s
+        WHERE (s.SYear, s.Ep_No) = (InYear, InEp)
+        ORDER BY s.No_of_votes DESC
+        LIMIT 20;
+    END IF;
+    IF (InEp = 3) THEN
+    	
+        SELECT sit.Ssn_trainee, sit.No_of_votes
+        FROM stageincludetrainee sit
+        WHERE (sit.SYear, sit.Ep_No) = (InYear, InEp)
+        AND sit.Ssn_trainee NOT IN(
+            SELECT lgt1.Ssn_trainee
+            FROM(
+                SELECT * FROM stageincludetrainee sit
+                WHERE (sit.SYear, sit.Ep_No, sit.Stage_No) IN (
+                    SELECT s.Syear, s.Ep_No, s.Stage_No
+                    FROM stage s
+                    WHERE(s.SYear, s.Ep_No) = (InYear,InEp)
+                    AND (s.Total_Votes) IN(
+                        SELECT MIN(s.Total_Votes)
+                        FROM stage s 
+                        WHERE (s.SYear, s.Ep_No) = (InYear,InEp)
+                        GROUP BY s.Song_ID
+                    )
+                )
+            )AS lgt1
+            WHERE (
+                SELECT 	COUNT(*) 
+                FROM(
+                    SELECT * FROM stageincludetrainee sit
+                    WHERE (sit.SYear, sit.Ep_No, sit.Stage_No) IN (
+                        SELECT s.Syear, s.Ep_No, s.Stage_No
+                        FROM stage s
+                        WHERE(s.SYear, s.Ep_No) = (InYear,InEp)
+                        AND (s.Total_Votes) IN(
+                            SELECT MIN(s.Total_Votes)
+                            FROM stage s 
+                            WHERE (s.SYear, s.Ep_No) = (InYear,InEp)
+                            GROUP BY s.Song_ID
+                  		)
+                	)
+                ) AS lgt2
+                WHERE lgt2.Stage_No = lgt1.Stage_No AND 
+                      lgt2.No_of_votes <= lgt1.No_of_votes
+			) <= 2
+		)
+		ORDER BY sit.No_of_votes; 
+    END IF;
+END;
+//
+DELIMITER ;
