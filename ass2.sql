@@ -628,7 +628,7 @@ SET GLOBAL FOREIGN_KEY_CHECKs=0;
 
 
     -- MentorValuateTrainee --
-    INSERT INTO `mentorvaluatetrainee` (`Syear`, `Ssn_trainee`, `Ssn_mentor`, `Score`) VALUES
+    INSERT INTO `mentorvaluatetrainee` (`Syear`, `Ssn_mentor`, `Ssn_trainee`, `Score`) VALUES
     (2018, '222220180001', '111120180001', 20),
     (2018, '222220180002', '111120180001', 73),
     (2018, '222220180003', '111120180001', 91),
