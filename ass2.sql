@@ -17,8 +17,7 @@ SET GLOBAL FOREIGN_KEY_CHECKs=0;
         Name text not NULL,
         CAddress text,
         Phone numeric(10) not NULL UNIQUE,
-        Edate date,
-        CONSTRAINT CnumberCons CHECK (Cnumber LIKE 'C[0-9][0-9][0-9]')
+        Edate date
     );
 
 

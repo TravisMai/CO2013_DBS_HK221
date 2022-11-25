@@ -1,3 +1,34 @@
+-- Trigger check Company number --
+DELIMITER //
+
+CREATE OR REPLACE TRIGGER check_CNumber
+AFTER INSERT ON company
+FOR EACH ROW
+BEGIN
+	IF (new.Cnumber NOT RLIKE '[C][0-9][0-9][0-9]') THEN
+    	SIGNAL SQLSTATE '45000' SET
+            	MESSAGE_TEXT = 'Not correct Company Number';
+   	END IF;
+END;
+//
+DELIMITER ;
+
+DELIMITER //
+
+CREATE OR REPLACE TRIGGER check_CNumber
+AFTER UPDATE ON company
+FOR EACH ROW
+BEGIN
+	IF (new.Cnumber NOT RLIKE '[C][0-9][0-9][0-9]') THEN
+    	SIGNAL SQLSTATE '45000' SET
+            	MESSAGE_TEXT = 'Not correct Company Number';
+   	END IF;
+END;
+//
+DELIMITER ;
+
+
+
 -- 1. Trigger to check constraint -- 
 -- a. Trainee can participate 3 seasons at most --
 DELIMITER //
@@ -158,6 +189,39 @@ DELIMITER ;
 DELIMITER //
 CREATE OR REPLACE TRIGGER stage_five_check
 AFTER INSERT ON stageincludetrainee
+FOR EACH ROW
+BEGIN
+	DECLARE group_stage_joined int(3);
+    DECLARE indi_stage_joined int(3);
+    
+    SELECT count(sit.Stage_No) INTO group_stage_joined
+    FROM stageincludetrainee sit join stage s
+    ON (sit.SYear, sit.Ep_No, sit.Stage_No) = (s.Syear, s.Ep_No, s.Stage_No)
+    WHERE sit.Syear = new.Syear AND sit.Ep_no = 5 AND s.Is_Group = 1;
+    
+    SELECT count(sit.Stage_No) INTO indi_stage_joined
+    FROM stageincludetrainee sit join stage s
+    ON (sit.SYear, sit.Ep_No, sit.Stage_No) = (s.Syear, s.Ep_No, s.Stage_No)
+    WHERE sit.Syear = new.Syear AND sit.Ep_no = 5 AND s.Is_Group = 0;
+    
+    IF (group_stage_joined > 1) THEN 
+    	SIGNAL SQLSTATE '45000' SET
+            	MESSAGE_TEXT = "Already joined a group stage";
+    END IF;
+    
+    IF (indi_stage_joined > 1) THEN 
+    	SIGNAL SQLSTATE '45000' SET
+            	MESSAGE_TEXT = "Already joined a individual stage";
+    END IF;
+    
+END;
+
+//
+DELIMITER ;
+
+DELIMITER //
+CREATE OR REPLACE TRIGGER stage_five_check_update
+AFTER UPDATE ON stageincludetrainee
 FOR EACH ROW
 BEGIN
 	DECLARE group_stage_joined int(3);
