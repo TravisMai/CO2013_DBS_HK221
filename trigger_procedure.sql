@@ -39,7 +39,7 @@ FOR EACH ROW
 BEGIN
 	DECLARE Total_year int;
 	SELECT count(s.Syear) INTO Total_year FROM seasontrainee s WHERE s.Ssn_trainee = new.Ssn_trainee GROUP BY s.Ssn_trainee;
-    IF (Total_year >= 3) THEN
+    IF (Total_year > 3) THEN
    		SIGNAL SQLSTATE '45000' SET
             	MESSAGE_TEXT = 'Max 3 season';
     END IF;
@@ -56,7 +56,7 @@ FOR EACH ROW
 BEGIN
 	DECLARE Total_year int;
 	SELECT count(s.Syear) INTO Total_year FROM seasontrainee s WHERE s.Ssn_trainee = new.Ssn_trainee GROUP BY s.Ssn_trainee;
-    IF (Total_year >= 3) THEN
+    IF (Total_year > 3) THEN
    		SIGNAL SQLSTATE '45000' SET
             	MESSAGE_TEXT = 'Max 3 season';
     END IF;
