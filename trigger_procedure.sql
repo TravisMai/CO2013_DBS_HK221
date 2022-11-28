@@ -75,7 +75,9 @@ BEGIN
 	DECLARE Debut_season year;
     DECLARE errorMessage text;
     SELECT s.SYear INTO Debut_season FROM stageincludetrainee s
-    WHERE s.Ep_No = 5 and s.Ssn_trainee = new.Ssn_trainee;
+    WHERE s.Ep_No = 5 and s.Ssn_trainee = new.Ssn_trainee
+    ORDER BY s.SYear DESC
+    LIMIT 1;
     IF (debut_season IS NOT NULL) THEN
     	IF (new.Syear > debut_season) THEN
         	SET errorMessage = concat("Joined debut night on ", debut_season);
@@ -97,7 +99,9 @@ BEGIN
 	DECLARE Debut_season year;
     DECLARE errorMessage text;
     SELECT s.SYear INTO Debut_season FROM stageincludetrainee s
-    WHERE s.Ep_No = 5 and s.Ssn_trainee = new.Ssn_trainee;
+    WHERE s.Ep_No = 5 and s.Ssn_trainee = new.Ssn_trainee
+    ORDER BY s.SYear DESC
+    LIMIT 1;
     IF (debut_season IS NOT NULL) THEN
     	IF (new.Syear > debut_season) THEN
         	SET errorMessage = concat("Joined debut night on ", debut_season);
