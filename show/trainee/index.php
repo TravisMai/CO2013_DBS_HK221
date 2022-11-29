@@ -3,7 +3,7 @@ $category_ids = isset($_GET['cids']) ? $_GET['cids'] : 'all';
 ?>
 <div class="content py-3">
     <div class="row">
-        <div class="col-md-4">
+        <!-- <div class="col-md-4">
             <div class="card card-outline rounded-0 card-primary shadow">
                 <div class="card-body">
                     <div class="list-group">
@@ -11,24 +11,24 @@ $category_ids = isset($_GET['cids']) ? $_GET['cids'] : 'all';
                             <div class="custom-control custom-checkbox">
                                 <input
                                     class="custom-control-input custom-control-input-primary custom-control-input-outline cat_all"
-                                    type="checkbox" id="cat_all" <?=!is_array($category_ids) && $category_ids== 'all' ?
-                                    "checked" : "" ?>>
+                                    type="checkbox" id="cat_all" <?=!is_array($category_ids) && $category_ids == 'all' ? 
+    "checked" : "" ?>>
                                 <label for="cat_all" class="custom-control-label"> Tất cả</label>
                             </div>
                         </div>
                         <?php
-                        $categories = $conn->query("SELECT * FROM `category_list` where delete_flag = 0 and status = 1 order by `name` asc ");
+                        $categories = $conn->query("SELECT * FROM `season` order by `SYear` desc ");
                         while ($row = $categories->fetch_assoc()):
                         ?>
                         <div class="list-group-item list-group-item-action">
                             <div class="custom-control custom-checkbox">
                                 <input
                                     class="custom-control-input custom-control-input-primary custom-control-input-outline cat_item"
-                                    type="checkbox" id="cat_item<?= $row['id'] ?>" <?=
-                                    in_array($row['id'], explode(',', $category_ids)) ? "checked" : '' ?> value="<?=
-                                    $row['id'] ?>">
-                                    <label for="cat_item<?= $row['id'] ?>" class="custom-control-label">
-                                        <?= $row['name'] ?>
+                                    type="checkbox" id="cat_item<?= $row['SYear'] ?>" <?=
+                                in_array($row['SYear'], explode(',', $category_ids)) ? "checked" : '' ?> value="<?=
+                                $row['SYear'] ?>">
+                                    <label for="cat_item<?= $row['SYear'] ?>" class="custom-control-label">
+                                        <?= $row['SYear'] ?> - <?= $row['Location'] ?>
                                     </label>
                             </div>
                         </div>
@@ -37,8 +37,8 @@ $category_ids = isset($_GET['cids']) ? $_GET['cids'] : 'all';
                 </div>
             </div>
         </div>
-        <p> </p>
-        <div class="col-md-8">
+        <p> </p> -->
+        <div class="col-md-12">
             <div class="card card-outline card-primary shadow rounded-0">
                 <div class="card-body">
                     <div class="container-fluid">
@@ -47,7 +47,7 @@ $category_ids = isset($_GET['cids']) ? $_GET['cids'] : 'all';
                                 <form action="" id="search-frm">
                                     <div class="input-group">
                                         <div class="input-group-prepend"><span class="input-group-text"
-                                                style="background-color:#C7F2A4">Tìm kiếm</span></div>
+                                                style="background-color:#C7F2A4">Search</span></div>
                                         <input type="search" id="search" class="form-control"
                                             value="<?= isset($_GET['search']) ? $_GET['search'] : '' ?>">
                                         <div class="input-group-append"><span class="input-group-text"
@@ -61,66 +61,92 @@ $category_ids = isset($_GET['cids']) ? $_GET['cids'] : 'all';
                             <?php
                             $swhere = "";
                             if (!empty($category_ids)):
-                                if ($category_ids != 'all') {
-                                    $swhere = " and p.category_id in ({$category_ids}) ";
-                                }
+                                // if ($category_ids != 'all') {
+                                //     $swhere = " and t.Ssn in ({$category_ids}) ";
+                                // }
                                 if (isset($_GET['search']) && !empty($_GET['search'])) {
-                                    $swhere .= " and (p.name LIKE '%{$_GET['search']}%' and p.id   LIKE '%{$_GET['search']}%' ) ";
+                                    $swhere .= " and (p.Fname LIKE '%{$_GET['search']}%' or p.Lname LIKE '%{$_GET['search']}%' or (concat(p.Fname,' ',p.Lname) LIKE '%{$_GET['search']}%') )";
                                 }
-
-                                $products = $conn->query("SELECT p.*, v.shop_name as vendor, c.name as `category` FROM `product_list` p inner join vendor_list v on p.vendor_id = v.id inner join category_list c on p.category_id = c.id where p.delete_flag = 0 and p.`status` =1 {$swhere} order by RAND()");
-                                while ($row = $products->fetch_assoc()):
+                            
+                            $trainee = $conn->query("SELECT DISTINCT t.*, st.Syear as syear, p.Fname as fname, p.Lname as lname, p.PAddress as `address`, p.Phone as phone FROM `trainee` t inner join `seasontrainee` st on st.Ssn_trainee=t.Ssn inner join `season` s on st.Syear=s.SYear inner join person p on p.Ssn=t.Ssn where  t.Ssn != 0 {$swhere} order by RAND()");
+                            while ($row = $trainee->fetch_assoc()):
                             ?>
-                            <div class="col-lg-4 col-md-6 col-sm-12 product-item">
-                                <a href="./?page=products/view_product&id=<?= $row['id'] ?>"
+                            <div class="col-lg-3 col-md-4 col-sm-8 product-item">
+                                <a href="./?page=trainee/view_trainee&Ssn=<?= $row['Ssn'] ?>"
                                     class="card shadow rounded-0 text-reset text-decoration-none">
                                     <div class="product-img-holder position-relative">
-                                        <img src="<?= validate_image($row['image_path']) ?>" alt="Product-image"
+                                        <img src="<?= validate_image($row['Photo']) ?>" alt="Product-image"
                                             class="img-top product-img" style="background-color:#f2faf4">
                                     </div>
                                     <div class="card-body border-top border-gray">
                                         <h5 class="card-title text-truncate w-100">
-                                            <?= $row['name'] ?>
+                                            <?= $row['fname'] ?>
+                                                <?= $row['lname'] ?>
                                         </h5>
-                                        <div class="d-flex w-100">
-                                            <div class="col-auto px-0"><small class="text-muted">Người bán: &nbsp
+                                        <!-- <div class="d-flex w-100">
+                                            <div class="col-auto px-0"><small class="text-muted">Ssn: &nbsp
                                                 </small></div>
                                             <div class="col-auto px-0 flex-shrink-1 flex-grow-1">
                                                 <p class="text-truncate m-0"><small class="text-muted">
-                                                        <?= $row['vendor'] ?>
+                                                        <?= $row['Ssn'] ?>
                                                     </small></p>
                                             </div>
                                         </div>
                                         <div class="d-flex">
-                                            <div class="col-auto px-0"><small class="text-muted">Danh mục: &nbsp
+                                            <div class="col-auto px-0"><small class="text-muted">Date of birth: &nbsp
                                                 </small></div>
                                             <div class="col-auto px-0 flex-shrink-1 flex-grow-1">
                                                 <p class="text-truncate m-0"><small class="text-muted">
-                                                        <?= $row['category'] ?>
+                                                        <?= $row['DoB'] ?>
                                                     </small></p>
                                             </div>
                                         </div>
                                         <div class="d-flex">
-                                            <div class="col-auto px-0"><small class="text-muted">Giá mong muốn:
-                                                    &nbsp</small></div>
+                                            <div class="col-auto px-0"><small class="text-muted">Company: &nbsp
+                                                </small></div>
                                             <div class="col-auto px-0 flex-shrink-1 flex-grow-1">
-                                                <p class="m-0 pl-3"><small class="text-primary">
-                                                        <?= format_num($row['price']) ?>
+                                                <p class="text-truncate m-0"><small class="text-muted">
+                                                        <?= $row['Company_ID'] ?>
                                                     </small></p>
                                             </div>
                                         </div>
-                                        <p class="card-text truncate-3 w-100">
-                                            <?= strip_tags(html_entity_decode($row['description'])) ?>
-                                        </p>
+                                        <div class="d-flex">
+                                            <div class="col-auto px-0"><small class="text-muted">Year: &nbsp
+                                                </small></div>
+                                            <div class="col-auto px-0 flex-shrink-1 flex-grow-1">
+                                                <p class="text-truncate m-0"><small class="text-muted">
+                                                        <?= $row['syear'] ?>
+                                                    </small></p>
+                                            </div>
+                                        </div>
+                                        <div class="d-flex">
+                                            <div class="col-auto px-0"><small class="text-muted">Phone: &nbsp
+                                                </small></div>
+                                            <div class="col-auto px-0 flex-shrink-1 flex-grow-1">
+                                                <p class="text-truncate m-0"><small class="text-muted">
+                                                        <?= $row['phone'] ?>
+                                                    </small></p>
+                                            </div>
+                                        </div>
+                                        <div class="d-flex">
+                                            <div class="col-auto px-0"><small class="text-muted">Address: &nbsp
+                                                </small></div>
+                                            <div class="col-auto px-0 flex-shrink-1 flex-grow-1">
+                                                <p class="card-text truncate-3 w-100"><small class="text-muted">
+                                                        <?= $row['address'] ?>
+                                                    </small></p>
+                                            </div>
+                                        </div> -->
                                     </div>
                                 </a>
                             </div>
                             <?php endwhile; ?>
                             <?php else: ?>
                             <div class="col-12 text-center">
-                                Xin chọn ít nhất 1 sản phẩm.
+                                Invalid
                             </div>
                             <?php endif; ?>
+                        </div>
                         </div>
                     </div>
                 </div>
@@ -141,7 +167,7 @@ $category_ids = isset($_GET['cids']) ? $_GET['cids'] : 'all';
             $('.cat_item:checked').each(function () {
                 ids.push($(this).val())
             })
-            location.href = "./?page=products&cids=" + (ids.join(","))
+            location.href = "./?page=trainee&cids=" + (ids.join(","))
         })
         $('#cat_all').change(function () {
             if ($(this).is(':checked') == true) {
@@ -157,7 +183,7 @@ $category_ids = isset($_GET['cids']) ? $_GET['cids'] : 'all';
             if ('<?=!empty($category_ids) && $category_ids != 'all' ?>' == 1) {
                 q += "&cids=<?= $category_ids ?>"
             }
-            location.href = "./?page=products&" + q;
+            location.href = "./?page=trainee&" + q;
 
         })
     })

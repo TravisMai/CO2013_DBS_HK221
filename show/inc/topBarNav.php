@@ -76,52 +76,10 @@
 <nav class="main-header navbar navbar-expand-md navbar-light border-0 text-sm bg-white shadow" id='top-Nav'>
 
   <div class="container">
-    <a href="<?php echo base_url ?>" class="navbar-brand">
+    <a href="<?php echo base_url ?>?page=trainee" class="navbar-brand">
       <img src="<?php echo validate_image($_settings->info('logo')) ?>" alt="Site Logo"
-        style="max-width:200px; max-height:auto;">
+        style="max-width:auto; max-height:65px;">
     </a>
-
-
-
-    <div class="collapse navbar-collapse order-3" id="navbarCollapse">
-      <!-- Left navbar links -->
-      <ul class="navbar-nav">
-        <li class="nav-item">
-          <a href="./" class="nav-link <?= isset($page) && $page == 'home' ? "active" : "" ?>"
-            style="color: <?= isset($page) && $page == 'home' ? "#54c577" : "#000" ?>">Trang chủ</a>
-        </li>
-        <li class="nav-item">
-          <a href="./?page=about" class="nav-link <?= isset($page) && $page == 'about' ? "active" : "" ?>"
-            style="color: <?= isset($page) && $page == 'about' ? "#54c577" : "#000" ?>">Giới thiệu</a>
-        </li>
-        <li class="nav-item">
-          <a href="./?page=products" class="nav-link <?= isset($page) && $page == 'products' ? "active" : "" ?>"
-            style="color: <?= isset($page) && $page == 'products' ? "#54c577" : "#000" ?>">Sản phẩm</a>
-        </li>
-        <li class="nav-item">
-          <a href="./?page=sellers" class="nav-link <?= isset($page) && $page == 'sellers' ? "active" : "" ?>"
-            style="color: <?= isset($page) && $page == 'sellers' ? "#54c577" : "#000" ?>">Doanh nghiệp</a>
-        </li>
-        <?php if ($_settings->userdata('id') > 0 && $_settings->userdata('login_type') == 3): ?>
-        <li class="nav-item">
-          <?php
-          $cart_count = $conn->query("SELECT sum(quantity) FROM `cart_list` where client_id = '{$_settings->userdata('id')}'")->fetch_array()[0];
-          $cart_count = $cart_count > 0 ? $cart_count : 0;
-          ?>
-          <a href="./?page=orders/cart" class="nav-link <?= isset($page) && $page == 'orders/cart' ? "active" : "" ?>"
-            style="color: <?= isset($page) && $page == 'orders/cart' ? "#54c577" : "#000" ?>"><span
-              class="badge badge-secondary rounded-cirlce" style="background-color:#54c577">
-              <?= format_num($cart_count) ?>
-            </span> Giỏ hàng</a>
-        </li>
-        <li class="nav-item">
-          <a href="./?page=orders/my_orders"
-            class="nav-link <?= isset($page) && $page == 'orders/my_orders' ? "active" : "" ?>"
-            style="color: <?= isset($page) && $page == 'orders/my_orders' ? "#54c577" : "#000" ?>">Đơn hàng của tôi</a>
-        </li>
-        <?php endif; ?>
-      </ul>
-    </div>
     <!-- Right navbar links -->
     <div class="order-1 order-md-3 navbar-nav navbar-no-expand ml-auto">
       <button class="navbar-toggler order-1 border-0 text-sm" type="button" data-toggle="collapse"

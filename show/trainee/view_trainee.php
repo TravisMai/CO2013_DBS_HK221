@@ -1,16 +1,16 @@
 <?php
-if (isset($_GET['id']) && $_GET['id'] > 0) {
-    $qry = $conn->query("SELECT  p.*, v.shop_name as vendor, v.id as shop_id,  c.name as `category` FROM `product_list` p inner join vendor_list v on p.vendor_id = v.id inner join category_list c on p.category_id = c.id where p.delete_flag = 0 and p.id = '{$_GET['id']}'");
+if (isset($_GET['Ssn']) && $_GET['Ssn'] > 0) {
+    $qry = $conn->query("SELECT DISTINCT t.*, st.Syear as syear, p.Fname as fname, p.Lname as lname, p.PAddress as `address`, p.Phone as phone FROM `trainee` t inner join `seasontrainee` st on st.Ssn_trainee=t.Ssn inner join `season` s on st.Syear=s.SYear inner join person p on p.Ssn=t.Ssn where  t.Ssn != 0 and t.Ssn = '{$_GET['Ssn']}'");
     if ($qry->num_rows > 0) {
         foreach ($qry->fetch_assoc() as $k => $v) {
             $$k = $v;
         }
     } else {
-        echo "<script> alert('Unkown Product ID.'); location.replace('./?page=products') </script>";
+        echo "<script> alert('Unkown Ssn.'); location.replace('./?page=trainee') </script>";
         exit;
     }
 } else {
-    echo "<script> alert('Product ID is required.'); location.replace('./?page=products') </script>";
+    echo "<script> alert('Ssn is required.'); location.replace('./?page=trainee') </script>";
     exit;
 }
 ?>
@@ -31,17 +31,11 @@ if (isset($_GET['id']) && $_GET['id'] > 0) {
     #prod-img-holder:hover #prod-img {
         transform: scale(1.2);
     }
-
-    .hah {}
-
-    .hah:hover {
-        background-color: #C7F2A4;
-    }
 </style>
 <div class="content py-3">
     <div class="card card-outline card-primary rounded-0 shadow">
         <div class="card-header">
-            <h5 class="card-title"><b>Chi tiết sản phẩm</b></h5>
+            <h2 class="card-title"><b>Trainee's detail infomation</b></h2>
         </div>
         <div class="card-body">
             <div class="container-fluid">
@@ -49,52 +43,60 @@ if (isset($_GET['id']) && $_GET['id'] > 0) {
                 <div class="row">
                     <div class="col-lg-4 col-md-5 col-sm-12 text-center">
                         <div class="position-relative overflow-hidden" id="prod-img-holder">
-                            <img src="<?= validate_image(isset($image_path) ? $image_path : "") ?>"
-                                alt="<?= $row['name'] ?>" id="prod-img" class="img-thumbnail"
-                                style="background-color:#f2faf4">
+                            <img src="<?= validate_image(isset($Photo) ? $Photo : "") ?>" id="prod-img"
+                                class="img-thumbnail" style="background-color:#f2faf4">
                         </div>
                     </div>
                     <div class="col-lg-8 col-md-7 col-sm-12">
                         <h3><b>
-                                <?= $name ?>
-                            </b></h3>
-                        <div class="d-flex w-100">
-                            <div class="col-auto px-0"><small class="text-muted">Người bán: &nbsp; </small></div>
-                            <a href="./?page=sellers/view_seller&id=<?= $vendor_id ?>">
-                                <h5 class="card-title text-truncate w-100 hah"><small class="text-muted">
-                                        <?= $vendor ?> &nbsp;
-                                    </small><i class="fas fa-user-tie fa-spin" style="color:#54c577"></i></h5>
-                            </a>
+                                <?= $fname ?>
+                                    <?= $lname ?> &nbsp;
+                            </b><i class="fas fa-user-tie fa-spin" style="color:#54c577"></i></h3>
+                        <div class="d-flex w-100" style="padding-bottom:10px">
+                            <div class="col-auto px-0">Ssn: &nbsp; </div>
+                                <h5 class="card-title text-truncate w-100 hah">
+                                        <?= $Ssn ?> &nbsp;
+                                    </h5>
                         </div>
-                        <div class="d-flex">
-                            <div class="col-auto px-0"><small class="text-muted">Danh mục: &nbsp; </small></div>
+                        <div class="d-flex" style="padding-bottom:10px">
+                            <div class="col-auto px-0">Date of birth: &nbsp; </div>
                             <div class="col-auto px-0 flex-shrink-1 flex-grow-1">
-                                <p class="m-0"><small class="text-muted">
-                                        <?= $category ?>
-                                    </small></p>
+                                <p class="m-0">
+                                        <?= $DoB ?>
+                                    </p>
                             </div>
                         </div>
-                        <div class="d-flex">
-                            <div class="col-auto px-0"><small class="text-muted">Giá mong muốn: &nbsp; </small></div>
+                        <div class="d-flex" style="padding-bottom:10px">
+                            <div class="col-auto px-0">Company: &nbsp; </div>
                             <div class="col-auto px-0 flex-shrink-1 flex-grow-1">
-                                <p class="m-0 pl-3"><small class="text-primary">
-                                        <?= format_num($price) ?>
-                                    </small></p>
+                                <p class="m-0">
+                                        <?= $Company_ID ?>
+                                    </p>
                             </div>
                         </div>
-                        <div class="row align-items-end">
-                            <div class="col-md-3 form-group">
-                                <input type="number" min="1" id='qty' value="1"
-                                    class="form-control rounded-0 text-center">
-                            </div>
-                            <div class="col-md-3 form-group">
-                                <button class="btn btn-primary btn-flat" type="button" id="add_to_cart"
-                                    style="background-color:#54c577"><i class="fa fa-cart-plus"></i> Thêm vào giỏ
-                                    hàng</button>
+                        <div class="d-flex" style="padding-bottom:10px">
+                            <div class="col-auto px-0">Seasion: &nbsp; </div>
+                            <div class="col-auto px-0 flex-shrink-1 flex-grow-1">
+                                <p class="m-0">
+                                        <?= $syear ?>
+                                    </p>
                             </div>
                         </div>
-                        <div class="w-100">
-                            <?= html_entity_decode($description) ?>
+                        <div class="d-flex" style="padding-bottom:10px">
+                            <div class="col-auto px-0">Phone: &nbsp; </div>
+                            <div class="col-auto px-0 flex-shrink-1 flex-grow-1">
+                                <p class="m-0">
+                                        <?= $phone ?>
+                                    </p>
+                            </div>
+                        </div>
+                        <div class="d-flex" style="padding-bottom:10px">
+                            <div class="col-auto px-0">Address: &nbsp; </div>
+                            <div class="col-auto px-0 flex-shrink-1 flex-grow-1">
+                                <p class="m-0">
+                                        <?= $address ?>
+                                    </p>
+                            </div>
                         </div>
                     </div>
                 </div>

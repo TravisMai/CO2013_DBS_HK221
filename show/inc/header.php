@@ -146,6 +146,6 @@
   <meta name="msapplication-TileImage" content="./uploads/favicons/sheaf-of-rice.png">
   <meta name="msapplication-config" content="./uploads/favicons/browserconfig.xml">
   <meta name="theme-color" content="#66BB6A">
-  <title>BkFresh | Dự án</title>
+  <title>BKast | BKoncert</title>
   <link rel="canonical" href="./">
 </head>

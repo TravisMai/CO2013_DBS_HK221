@@ -66,7 +66,7 @@
 
 <body class="layout-top-nav layout-fixed layout-navbar-fixed" style="height: auto;">
   <div class="wrapper">
-    <?php $page = isset($_GET['page']) ? $_GET['page'] : 'home'; ?>
+    <?php $page = isset($_GET['page']) ? $_GET['page'] : 'trainee'; ?>
     <?php require_once('inc/topBarNav.php') ?>
     <?php if ($_settings->chk_flashdata('success')): ?>
     <script>
