@@ -1160,3 +1160,31 @@ SET GLOBAL FOREIGN_KEY_CHECKs=0;
     (4, 2018, 4, 842),
     (6, 2018, 4, 843),
     (8, 2018, 4, 844);
+
+
+-- Add table for system --
+
+CREATE TABLE `system_info` (
+  `id` int(30) NOT NULL,
+  `meta_field` text NOT NULL,
+  `meta_value` text NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Dumping data for table `system_info`
+--
+
+INSERT INTO `system_info` (`id`, `meta_field`, `meta_value`) VALUES
+(1, 'name', ''),
+(6, 'short_name', 'BKast'),
+(11, 'logo', 'uploads/VFRESH.png'),
+(13, 'user_avatar', 'uploads/user_avatar.jpg'),
+(14, 'cover', 'uploads/banner_img2.jpg'),
+(15, 'small_logo', 'uploads/sheaf-of-rice.png'),
+(16, 'banner', 'please give us the bezt score you have');
+
+ALTER TABLE `system_info`
+  ADD PRIMARY KEY (`id`);
+
+ALTER TABLE `system_info`
+  MODIFY `id` int(30) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=17;
