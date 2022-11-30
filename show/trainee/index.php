@@ -65,10 +65,10 @@ $category_ids = isset($_GET['cids']) ? $_GET['cids'] : 'all';
                                 //     $swhere = " and t.Ssn in ({$category_ids}) ";
                                 // }
                                 if (isset($_GET['search']) && !empty($_GET['search'])) {
-                                    $swhere .= " and (p.Fname LIKE '%{$_GET['search']}%' or p.Lname LIKE '%{$_GET['search']}%' or (concat(p.Fname,' ',p.Lname) LIKE '%{$_GET['search']}%') )";
+                                    $swhere .= " and (p.Ssn LIKE '%{$_GET['search']}%' or p.Fname LIKE '%{$_GET['search']}%' or p.Lname LIKE '%{$_GET['search']}%' or (concat(p.Fname,' ',p.Lname) LIKE '%{$_GET['search']}%') )";
                                 }
                             
-                            $trainee = $conn->query("SELECT DISTINCT t.*, st.Syear as syear, p.Fname as fname, p.Lname as lname, p.PAddress as `address`, p.Phone as phone FROM `trainee` t inner join `seasontrainee` st on st.Ssn_trainee=t.Ssn inner join `season` s on st.Syear=s.SYear inner join person p on p.Ssn=t.Ssn where  t.Ssn != 0 {$swhere} order by RAND()");
+                            $trainee = $conn->query("SELECT DISTINCT t.*, p.Fname as fname, p.Lname as lname FROM `trainee` t inner join `seasontrainee` st on st.Ssn_trainee=t.Ssn inner join `season` s on st.Syear=s.SYear inner join person p on p.Ssn=t.Ssn where  t.Ssn != 0 {$swhere} order by RAND()");
                             while ($row = $trainee->fetch_assoc()):
                             ?>
                             <div class="col-lg-3 col-md-4 col-sm-8 product-item">

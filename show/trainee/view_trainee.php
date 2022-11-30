@@ -104,7 +104,7 @@ if (isset($_GET['Ssn']) && $_GET['Ssn'] > 0) {
                                         $row = $bestresult->fetch_assoc();
                                     ?>
                                 <p class="m-0">
-                                    <?= $row['best_year'] ?>
+                                <?= isset($row['best_year']) ? $row['best_year'] : 'No result' ?>
                                 </p>
                             </div>
                         </div>
