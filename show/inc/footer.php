@@ -283,53 +283,8 @@
             </ul>
           </div>
         </div>
-        <div class="col-lg-3 col-md-6">
-          <div class="f_widget about-widget pl_70 wow fadeInLeft" data-wow-delay="0.4s"
-            style="visibility: visible; animation-delay: 0.4s; animation-name: fadeInLeft;">
-            <h3 class="f-title f_600 t_color f_size_18" style="color:#54c577">BkFresh - BKonnect</h3>
-            <ul class="list-unstyled f_list">
-              <li><a href="./">Trang chủ</a></li>
-              <li><a href="./?page=about">Giới thiệu</a></li>
-              <li><a href="./?page=products">Sản phẩm</a></li>
-              <li><a href="./?page=sellers">Doanh nghiệp</a></li>
-            </ul>
-          </div>
-        </div>
-        <div class="col-lg-3 col-md-6">
-          <div class="f_widget about-widget pl_70 wow fadeInLeft" data-wow-delay="0.6s"
-            style="visibility: visible; animation-delay: 0.6s; animation-name: fadeInLeft;">
-            <h3 class="f-title f_600 t_color f_size_18" style="color:#54c577">Tài khoản</h3>
-            <ul class="list-unstyled f_list">
-              <?php if ($_settings->userdata('id') <= 0): ?>
-              <li>
-                <a href="./login.php">Đăng nhập</a>
-              </li>
-              <li>
-                <a href="./register.php">Đăng ký</a>
-              </li>
-              <?php endif; ?>
-              <?php if ($_settings->userdata('id') > 0 && $_settings->userdata('login_type') == 3): ?>
-              <li>
-                <a href="./?page=manage_account">Tài khoản của tôi</a>
-              </li>
-              <li>
-                <?php
-                                    $cart_count = $conn->query("SELECT sum(quantity) FROM `cart_list` where client_id = '{$_settings->userdata('id')}'")->fetch_array()[0];
-                                    $cart_count = $cart_count > 0 ? $cart_count : 0;
-                                    ?>
-                <a href="./?page=orders/cart" class="<?= isset($page) && $page == 'orders/cart' ? "active" : "" ?>"><span
-                    class="badge badge-secondary rounded-cirlce">
-                    <?= format_num($cart_count) ?>
-                  </span> Giỏ hàng</a>
-              </li>
-              <li>
-                <a href="./?page=orders/my_orders"
-                  class="<?= isset($page) && $page == 'orders/my_orders' ? "active" : "" ?>">Đơn hàng của tôi</a>
-              </li>
-              <?php endif; ?>
-            </ul>
-          </div>
-        </div>
+        
+        
         <div class="col-lg-3 col-md-6">
           <div class="f_widget social-widget pl_70 wow fadeInLeft" data-wow-delay="0.8s"
             style="visibility: visible; animation-delay: 0.8s; animation-name: fadeInLeft;">
@@ -342,22 +297,7 @@
               <a href="https://www.instagram.com/bachkhoa.hcmut/" target="_blank" class="fab fa-instagram fa-spin"></a>
             </div>
           </div>
-          <div class="f_widget social-widget pl_70 wow fadeInLeft" data-wow-delay="0.8s"
-            style="visibility: visible; animation-delay: 0.8s; animation-name: fadeInLeft;">
-            <?php
-                            $sql = "UPDATE Counter SET visits = visits+1 WHERE id = 1";
-                            $result = mysqli_query($conn, $sql);
-
-                            $sql = "SELECT visits FROM Counter WHERE id = 1";
-                            $result = mysqli_query($conn, $sql);
-
-                            while ($row = $result->fetch_assoc()):
-                            ?>
-            <br></br>
-            <h3 class="f-title f_600 t_color f_size_18" style="color:#54c577">Tổng lượt truy cập: <?= $row['visits'] ?>
-                &nbsp;&nbsp;<i class="fas fa-user fa-spin" style="color:#54c577"></i></h3>
-            <?php endwhile; ?>
-          </div>
+          
         </div>
       </div>
     </div>

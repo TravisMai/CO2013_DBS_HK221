@@ -111,14 +111,13 @@
     <!-- /.login-logo -->
     <div class="card card-outline card-primary" style="border-color:#54c577">
       <div class="card-header text-center">
-        <a href="./login.php" class="h1"><b>Người bán</b></a>
+        <a href="./login.php" class="h1"><b>Manager</b></a>
       </div>
       <div class="card-body">
-        <p class="login-box-msg">Đăng nhập để tiếp tục</p>
 
         <form id="vlogin-frm" action="" method="post">
           <div class="input-group mb-3">
-            <input type="text" class="form-control" name="username" autofocus placeholder="Email">
+            <input type="text" class="form-control" name="username" autofocus placeholder="Username">
             <div class="input-group-append">
               <div class="input-group-text">
                 <span class="fas fa-user"></span>
@@ -126,7 +125,7 @@
             </div>
           </div>
           <div class="input-group mb-3">
-            <input type="password" class="form-control" name="password" placeholder="Mật khẩu">
+            <input type="password" class="form-control" name="password" placeholder="Password">
             <div class="input-group-append">
               <div class="input-group-text">
                 <span class="fas fa-lock"></span>
@@ -135,14 +134,11 @@
           </div>
           <div class="row align-item-end">
             <div class="col-8">
-              <a href="<?= base_url ?>" class="green_btn_text">Quay về trang chủ</a>
+              <a href="<?= base_url ?>" class="green_btn_text">Go back</a>
             </div>
             <!-- /.col -->
             <div class="col-4">
-              <button type="submit" class="btn btn-primary btn-block btn-flat green_btn">Đăng nhập</button>
-            </div>
-            <div class="col-12 text-center">
-              <a href="<?= base_url . 'vendor/register.php' ?>" class="green_btn_text">Tạo tài khoản</a>
+              <button type="submit" class="btn btn-primary btn-block btn-flat green_btn">Login</button>
             </div>
             <!-- /.col -->
           </div>
@@ -206,8 +202,8 @@
               _this.prepend(el)
               el.show('.modal')
             } else {
-              el.text("An error occured");
-              console.error(resp)
+              // el.text("An error occured");
+              // console.error(resp)
             }
             $("html, body").scrollTop(0);
             end_loader()

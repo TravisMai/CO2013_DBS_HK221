@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Nov 29, 2022 at 04:35 PM
+-- Generation Time: Nov 30, 2022 at 07:05 AM
 -- Server version: 10.4.25-MariaDB
 -- PHP Version: 8.1.10
 
@@ -629,16 +629,16 @@ INSERT INTO `person` (`Ssn`, `Fname`, `Lname`, `PAddress`, `Phone`) VALUES
 ('111120190020', 'Toi', 'Tan', 'Le Lai Street, District 1, HCMC', '354887742'),
 ('111120190021', 'Khuya', 'Tai', 'Nguyen Du Street, District 1, HCMC', '354887743'),
 ('111120190022', 'Jacob', 'Chuong', 'Tran Hung Dao Street, District 1, HCMC', '354887744'),
-('111120190023', 'Oliver', 'Jake', 'Tran Dinh Xu Street, District 1, HCMC', '354887745'),
+('111120190023', 'Oliver', 'Jakiechan', 'Tran Dinh Xu Street, District 1, HCMC', '354887745'),
 ('111120190024', 'John', 'Jack', 'Le Loi Street, District 1, HCMC', '354887746'),
-('111120190025', 'Robert', 'Harry', 'Nguyen Hue Street, District 1, HCMC', '354887747'),
-('111120190026', 'Michael', 'Jacob', 'Tran Hung Dao Street, District 5, HCMC', '354887748'),
+('111120190025', 'Robert', 'Harrison', 'Nguyen Hue Street, District 1, HCMC', '354887747'),
+('111120190026', 'Michael', 'Jacobinet', 'Tran Hung Dao Street, District 5, HCMC', '354887748'),
 ('111120190027', 'William', 'Charlie', 'Ho Hao Hon Street, District 1, HCMC', '354887749'),
 ('111120190028', 'David', 'Thomas', 'Le Lai Street, District 1, HCMC', '354887750'),
 ('111120190029', 'Richard', 'George', 'Nguyen Du Street, District 1, HCMC', '354887751'),
 ('111120190030', 'Joseph', 'Oscar', 'Dong Van Cong Street, District 2, HCMC', '354887752'),
 ('111120190031', 'Oliver', 'Jake', 'Ho Hao Hon Street, District 1, HCMC', '354888853'),
-('111120190032', 'John', 'Jack', 'Le Loi Street, District 1, HCMC', '354888854'),
+('111120190032', 'John', 'Jacksonie', 'Le Loi Street, District 1, HCMC', '354888854'),
 ('111120190033', 'Robert', 'Harry', 'Tran Hung Dao Street, District 1, HCMC', '354888855'),
 ('111120190034', 'Michael', 'Jacob', 'Tran Dinh Xu Street, District 1, HCMC', '354888856'),
 ('111120190035', 'Ti', 'Charlie', 'Le Loi Street, District 1, HCMC', '354888857'),
@@ -1326,6 +1326,34 @@ INSERT INTO `trainee` (`Ssn`, `DoB`, `Photo`, `Company_ID`) VALUES
 ('111120190039', '1991-08-11', 'uploads/5.png', 'C103'),
 ('111120190040', '1990-09-09', 'uploads/5.png', 'NULL');
 
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `vendor_list`
+--
+
+CREATE TABLE `vendor_list` (
+  `id` int(30) NOT NULL,
+  `code` varchar(100) NOT NULL,
+  `name` text NOT NULL,
+  `contact` text NOT NULL,
+  `email` text DEFAULT NULL,
+  `username` text NOT NULL,
+  `password` text NOT NULL,
+  `avatar` text DEFAULT NULL,
+  `status` tinyint(1) NOT NULL DEFAULT 1,
+  `delete_flag` tinyint(1) NOT NULL DEFAULT 0,
+  `date_created` datetime NOT NULL DEFAULT current_timestamp(),
+  `date_updated` datetime DEFAULT NULL ON UPDATE current_timestamp()
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Dumping data for table `vendor_list`
+--
+
+INSERT INTO `vendor_list` (`id`, `code`, `name`, `contact`, `email`, `username`, `password`, `avatar`, `status`, `delete_flag`, `date_created`, `date_updated`) VALUES
+(5, '202210-00001', 'sManager', '0912345678', 'nghia.maiemches@hcmut.edu.vn', 'sManager', '6f253286e4e82bcc67d95a527bd5ffc4', 'uploads/vendors/5.png?v=1666107634', 1, 0, '2022-10-14 18:40:27', '2022-10-18 22:40:34');
+
 --
 -- Indexes for dumped tables
 --
@@ -1503,6 +1531,12 @@ ALTER TABLE `trainee`
   ADD KEY `Company_ID` (`Company_ID`);
 
 --
+-- Indexes for table `vendor_list`
+--
+ALTER TABLE `vendor_list`
+  ADD PRIMARY KEY (`id`);
+
+--
 -- AUTO_INCREMENT for dumped tables
 --
 
@@ -1523,6 +1557,12 @@ ALTER TABLE `song_sequecing`
 --
 ALTER TABLE `system_info`
   MODIFY `id` int(30) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=17;
+
+--
+-- AUTO_INCREMENT for table `vendor_list`
+--
+ALTER TABLE `vendor_list`
+  MODIFY `id` int(30) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 
 --
 -- Constraints for dumped tables

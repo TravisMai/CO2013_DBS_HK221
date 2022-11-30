@@ -5,7 +5,7 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link rel="icon" href="<?php echo validate_image($_settings->info('logo')) ?>" />
+    <link rel="icon" href="<?php echo validate_image($_settings->info('small_logo')) ?>" />
     <!-- Google Font: Source Sans Pro -->
     <!-- <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&amp;display=fallback"> -->
     <!-- Font Awesome -->
@@ -73,6 +73,6 @@
     <meta name="msapplication-config" content="../uploads/favicons/browserconfig.xml">
     <meta name="theme-color" content="#66BB6A">
     <link rel="shortcut icon" href="../uploads/favicons/sheaf-of-rice.png">
-    <title>BkFresh | Người bán</title>
+    <title>BKast | BKoncert</title>
     <link rel="canonical" href="./">
   </head>
