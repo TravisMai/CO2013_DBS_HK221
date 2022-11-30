@@ -1,6 +1,6 @@
 <?php
 if (isset($_GET['Ssn']) && $_GET['Ssn'] > 0) {
-    $qry = $conn->query("SELECT DISTINCT t.*, st.Syear as syear, p.Fname as fname, p.Lname as lname, p.PAddress as `address`, p.Phone as phone FROM `trainee` t inner join `seasontrainee` st on st.Ssn_trainee=t.Ssn inner join `season` s on st.Syear=s.SYear inner join person p on p.Ssn=t.Ssn where  t.Ssn != 0 and t.Ssn = '{$_GET['Ssn']}'");
+    $qry = $conn->query("SELECT DISTINCT t.*, st.Syear as syear, p.Fname as fname, p.Lname as lname, p.PAddress as `address`, p.Phone as phone, count(st.Syear) as cyear FROM `trainee` t inner join `seasontrainee` st on st.Ssn_trainee=t.Ssn inner join `season` s on st.Syear=s.SYear inner join person p on p.Ssn=t.Ssn where  t.Ssn != 0 and t.Ssn = '{$_GET['Ssn']}'");
     if ($qry->num_rows > 0) {
         foreach ($qry->fetch_assoc() as $k => $v) {
             $$k = $v;
@@ -32,6 +32,8 @@ if (isset($_GET['Ssn']) && $_GET['Ssn'] > 0) {
         transform: scale(1.2);
     }
 </style>
+
+
 <div class="content py-3">
     <div class="card card-outline card-primary rounded-0 shadow">
         <div class="card-header">
@@ -74,14 +76,7 @@ if (isset($_GET['Ssn']) && $_GET['Ssn'] > 0) {
                                     </p>
                             </div>
                         </div>
-                        <div class="d-flex" style="padding-bottom:10px">
-                            <div class="col-auto px-0">Seasion: &nbsp; </div>
-                            <div class="col-auto px-0 flex-shrink-1 flex-grow-1">
-                                <p class="m-0">
-                                        <?= $syear ?>
-                                    </p>
-                            </div>
-                        </div>
+                        
                         <div class="d-flex" style="padding-bottom:10px">
                             <div class="col-auto px-0">Phone: &nbsp; </div>
                             <div class="col-auto px-0 flex-shrink-1 flex-grow-1">
@@ -98,56 +93,57 @@ if (isset($_GET['Ssn']) && $_GET['Ssn'] > 0) {
                                     </p>
                             </div>
                         </div>
+                        <div class="d-flex" style="padding-bottom:10px">
+                            <div class="col-auto px-0">Best result season: &nbsp; </div>
+                            <div class="col-auto px-0 flex-shrink-1 flex-grow-1">
+                                    <?= 
+                                        $swhere = "";
+                                        $swhere .= "sit.Ssn_trainee ='{$_GET['Ssn']}'";
+                                        
+                                        $bestresult = $conn->query("SELECT sit.SYear as best_year FROM stageincludetrainee sit WHERE {$swhere} ORDER BY sit.Ep_No DESC LIMIT 1;");
+                                        $row = $bestresult->fetch_assoc();
+                                    ?>
+                                <p class="m-0">
+                                    <?= $row['best_year'] ?>
+                                </p>
+                            </div>
+                        </div>
+                        <div class="d-flex" style="padding-bottom:10px">
+                            <div class="col-auto px-0">Joined season: &nbsp; </div>
+                            <div class="col-auto px-0 flex-shrink-1 flex-grow-1">
+                                <p class="m-0">
+                                        <?= $cyear ?>
+                                    </p>
+                                        <?= 
+                                        $swhere = "";
+                                        $swhere .= "st.Ssn_trainee ='{$_GET['Ssn']}'";
+                                        
+                                        $trainee = $conn->query("SELECT DISTINCT st.Syear as syear FROM `seasontrainee` st where {$swhere}");
+                                        while ($row = $trainee->fetch_assoc()):
+                                        ?>
+                                        <a class="text" href="javascript:void(0)"
+                                        data-year="<?= $row['syear'] ?>" data-ssn="<?= $Ssn ?>">
+                                        
+                                                <?= $row['syear'] ?> &nbsp;
+                                            
+                                        </a>
+                                        <?php endwhile; ?>
+                            </div>
+                            
+                        </div>
+                        
                     </div>
                 </div>
             </div>
         </div>
     </div>
 </div>
+
+
 <script>
-    function add_to_cart() {
-        var pid = '<?= isset($id) ? $id : '' ?>';
-        var qty = $('#qty').val();
-        var el = $('<div>')
-        el.addClass('alert alert-danger')
-        el.hide()
-        $('#msg').html('')
-        start_loader()
-        $.ajax({
-            url: _base_url_ + 'classes/Master.php?f=add_to_cart',
-            method: 'POST',
-            data: { product_id: pid, quantity: qty },
-            dataType: 'json',
-            error: err => {
-                console.error(err)
-                alert_toast('An error occurred.', 'error')
-                end_loader()
-            },
-            success: function (resp) {
-                if (resp.status == 'success') {
-                    location.reload()
-                } else if (!!resp.msg) {
-                    el.text(resp.msg)
-                    $('#msg').append(el)
-                    el.show('slow')
-                    $('html, body').scrollTop(0)
-                } else {
-                    el.text("An error occurred. Please try to refresh this page.")
-                    $('#msg').append(el)
-                    el.show('slow')
-                    $('html, body').scrollTop(0)
-                }
-                end_loader()
-            }
-        })
-    }
-    $(function () {
-        $('#add_to_cart').click(function () {
-            if ('<?= $_settings->userdata('id') > 0 && $_settings->userdata('login_type') == 3 ?>') {
-                add_to_cart();
-            } else {
-                location.href = "./login.php"
-            }
-        })
-    })
+    $('.text').click(function () {
+        uni_modal("Result in season " + $(this).attr('data-year') , "trainee/view_trainee_result.php?year=" + $(this).attr('data-year') + "&ssn=" + $(this).attr('data-ssn'), 'mid-large')
+    });
+    
 </script>
+
