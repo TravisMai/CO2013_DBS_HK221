@@ -11,8 +11,7 @@ SET GLOBAL FOREIGN_KEY_CHECKs=0;
 -- CREATE TABLE --
 
     -- Company --
-    CREATE Table Company
-    (
+    CREATE Table Company(
         Cnumber char(4) not NULL primary key,
         Name text not NULL,
         CAddress text,
