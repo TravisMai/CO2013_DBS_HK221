@@ -354,7 +354,7 @@ DELIMITER //
 CREATE OR REPLACE PROCEDURE trainee_result
 (InYear year, InSsn decimal(12,0))
 BEGIN
-    SELECT a.Ep_no as 'Episode', b.Score as 'Num of votes/ avg score'
+    SELECT a.Ep_no as 'Episode', b.Score as 'Result'
     FROM(
         SELECT 1 as Ep_no, NULL as 'Score'
         UNION ALL
@@ -367,33 +367,33 @@ BEGIN
         SELECT 5 as Ep_no, NULL as 'Score'
     ) AS a
     LEFT JOIN(
-        SELECT 1 as Ep_no, AVG(mvt.Score) as 'Score'
+        SELECT 1 as Ep_no, format(AVG(mvt.Score),2) as 'Score'
         FROM mentorvaluatetrainee mvt
         WHERE (mvt.Syear, mvt.Ssn_trainee) = (InYear, InSsn)
 
         UNION 
 
-        SELECT 2 as Ep_no, sit.No_of_votes as 'Score'
+        SELECT 2 as Ep_no, format(sit.No_of_votes,0) as 'Score'
         FROM stageincludetrainee sit
         WHERE (sit.SYear, sit.Ep_No, sit.Ssn_trainee) = (InYear, 2, InSsn)
 
         UNION
 
 
-        SELECT 3 as Ep_no, sit.No_of_votes as 'Score'
+        SELECT 3 as Ep_no, format(sit.No_of_votes,0) as 'Score'
         FROM stageincludetrainee sit
         WHERE (sit.SYear, sit.Ep_No, sit.Ssn_trainee) = (InYear, 3, InSsn)
 
         UNION
 
 
-        SELECT 4 as Ep_no, sit.No_of_votes as 'Score'
+        SELECT 4 as Ep_no, format(sit.No_of_votes,0) as 'Score'
         FROM stageincludetrainee sit
         WHERE (sit.SYear, sit.Ep_No, sit.Ssn_trainee) = (InYear, 4, InSsn)
 
         UNION
 
-        SELECT 5 as Ep_no, sit.No_of_votes as 'Score'
+        SELECT 5 as Ep_no, format(sit.No_of_votes,0) as 'Score'
         FROM stageincludetrainee sit
         WHERE sit.Ssn_trainee = InSsn
         AND sit.Stage_No IN(
@@ -406,3 +406,4 @@ BEGIN
 END;
 //
 DELIMITER ;
+
