@@ -15,7 +15,7 @@ DELIMITER ;
 
 DELIMITER //
 
-CREATE OR REPLACE TRIGGER check_CNumber
+CREATE OR REPLACE TRIGGER check_CNumber_Update
 AFTER UPDATE ON company
 FOR EACH ROW
 BEGIN
@@ -178,7 +178,7 @@ BEGIN
     ON (sit.SYear, sit.Ep_No, sit.Stage_No) = (s.Syear, s.Ep_No, s.Stage_No)
     WHERE sit.Syear = new.Syear AND sit.Ep_No = new.Ep_No AND new.Ep_no != 1 AND new.Ep_no != 5 AND s.Is_Group = 1 AND sit.Ssn_trainee = new.Ssn_trainee;
     IF (group_stage_joined > 1) THEN 
-        SET errorMessage = concat("Already joined a group stage", new.Ssn_trainee);
+        SET errorMessage = concat(new.Ssn_trainee, " already joined a group stage");
     	SIGNAL SQLSTATE '45000' SET
             	MESSAGE_TEXT = errorMessage;
     END IF;
@@ -199,7 +199,7 @@ BEGIN
     ON (sit.SYear, sit.Ep_No, sit.Stage_No) = (s.Syear, s.Ep_No, s.Stage_No)
     WHERE sit.Syear = new.Syear AND sit.Ep_No = new.Ep_No AND new.Ep_no != 1 AND new.Ep_no != 5 AND s.Is_Group = 1 AND sit.Ssn_trainee = new.Ssn_trainee;
     IF (group_stage_joined > 1) THEN 
-        SET errorMessage = concat("Already joined a group stage", new.Ssn_trainee);
+        SET errorMessage = concat(new.Ssn_trainee, " already joined a group stage");
     	SIGNAL SQLSTATE '45000' SET
             	MESSAGE_TEXT = errorMessage;
     END IF;
