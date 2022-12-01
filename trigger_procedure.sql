@@ -148,6 +148,22 @@ END;
 //
 DELIMITER ;
 
+DELIMITER //
+
+CREATE OR REPLACE TRIGGER Delete_total_vote
+AFTER DELETE ON stageincludetrainee
+FOR EACH ROW
+BEGIN
+	DECLARE old_vote int;
+    SET old_vote = old.No_of_votes;
+	UPDATE stage s
+    SET s.Total_Votes = s.Total_Votes - old_vote
+    WHERE (s.Syear,s.Ep_No,s.Stage_No) = (old.Syear, old.Ep_no, old.Stage_No);
+END;
+
+//
+DELIMITER ;
+
 -- 3. Write trigger to ensure that a trainee has : --
 -- a. at most one group stage in episode 2, 3, 4 --
 DELIMITER //
@@ -156,13 +172,15 @@ AFTER INSERT ON stageincludetrainee
 FOR EACH ROW
 BEGIN
 	DECLARE group_stage_joined int(3);
+    DECLARE errorMessage text;
     SELECT count(sit.Stage_No) INTO group_stage_joined
     FROM stageincludetrainee sit join stage s
     ON (sit.SYear, sit.Ep_No, sit.Stage_No) = (s.Syear, s.Ep_No, s.Stage_No)
-    WHERE sit.Syear = new.Syear AND sit.Ep_No = new.Ep_No AND new.Ep_no != 1 AND new.Ep_no != 5 AND s.Is_Group = 1;
+    WHERE sit.Syear = new.Syear AND sit.Ep_No = new.Ep_No AND new.Ep_no != 1 AND new.Ep_no != 5 AND s.Is_Group = 1 AND sit.Ssn_trainee = new.Ssn_trainee;
     IF (group_stage_joined > 1) THEN 
+        SET errorMessage = concat("Already joined a group stage", new.Ssn_trainee);
     	SIGNAL SQLSTATE '45000' SET
-            	MESSAGE_TEXT = "Already joined a group stage";
+            	MESSAGE_TEXT = errorMessage;
     END IF;
 END;
 
@@ -171,17 +189,19 @@ DELIMITER ;
 
 DELIMITER //
 CREATE OR REPLACE TRIGGER group_stage_check_update
-AFTER update ON stageincludetrainee
+AFTER UPDATE ON stageincludetrainee
 FOR EACH ROW
 BEGIN
 	DECLARE group_stage_joined int(3);
+    DECLARE errorMessage text;
     SELECT count(sit.Stage_No) INTO group_stage_joined
     FROM stageincludetrainee sit join stage s
     ON (sit.SYear, sit.Ep_No, sit.Stage_No) = (s.Syear, s.Ep_No, s.Stage_No)
-    WHERE sit.Syear = new.Syear AND sit.Ep_No = new.Ep_No AND new.Ep_no != 1 AND new.Ep_no != 5 AND s.Is_Group = 1;
+    WHERE sit.Syear = new.Syear AND sit.Ep_No = new.Ep_No AND new.Ep_no != 1 AND new.Ep_no != 5 AND s.Is_Group = 1 AND sit.Ssn_trainee = new.Ssn_trainee;
     IF (group_stage_joined > 1) THEN 
+        SET errorMessage = concat("Already joined a group stage", new.Ssn_trainee);
     	SIGNAL SQLSTATE '45000' SET
-            	MESSAGE_TEXT = "Already joined a group stage";
+            	MESSAGE_TEXT = errorMessage;
     END IF;
 END;
 
@@ -201,12 +221,12 @@ BEGIN
     SELECT count(sit.Stage_No) INTO group_stage_joined
     FROM stageincludetrainee sit join stage s
     ON (sit.SYear, sit.Ep_No, sit.Stage_No) = (s.Syear, s.Ep_No, s.Stage_No)
-    WHERE sit.Syear = new.Syear AND sit.Ep_no = 5 AND s.Is_Group = 1;
+    WHERE sit.Syear = new.Syear AND sit.Ep_no = 5 AND s.Is_Group = 1 AND sit.Ssn_trainee = new.Ssn_trainee;
     
     SELECT count(sit.Stage_No) INTO indi_stage_joined
     FROM stageincludetrainee sit join stage s
     ON (sit.SYear, sit.Ep_No, sit.Stage_No) = (s.Syear, s.Ep_No, s.Stage_No)
-    WHERE sit.Syear = new.Syear AND sit.Ep_no = 5 AND s.Is_Group = 0;
+    WHERE sit.Syear = new.Syear AND sit.Ep_no = 5 AND s.Is_Group = 0 AND sit.Ssn_trainee = new.Ssn_trainee;
     
     IF (group_stage_joined > 1) THEN 
     	SIGNAL SQLSTATE '45000' SET
@@ -234,12 +254,12 @@ BEGIN
     SELECT count(sit.Stage_No) INTO group_stage_joined
     FROM stageincludetrainee sit join stage s
     ON (sit.SYear, sit.Ep_No, sit.Stage_No) = (s.Syear, s.Ep_No, s.Stage_No)
-    WHERE sit.Syear = new.Syear AND sit.Ep_no = 5 AND s.Is_Group = 1;
+    WHERE sit.Syear = new.Syear AND sit.Ep_no = 5 AND s.Is_Group = 1 AND sit.Ssn_trainee = new.Ssn_trainee;
     
     SELECT count(sit.Stage_No) INTO indi_stage_joined
     FROM stageincludetrainee sit join stage s
     ON (sit.SYear, sit.Ep_No, sit.Stage_No) = (s.Syear, s.Ep_No, s.Stage_No)
-    WHERE sit.Syear = new.Syear AND sit.Ep_no = 5 AND s.Is_Group = 0;
+    WHERE sit.Syear = new.Syear AND sit.Ep_no = 5 AND s.Is_Group = 0 AND sit.Ssn_trainee = new.Ssn_trainee;
     
     IF (group_stage_joined > 1) THEN 
     	SIGNAL SQLSTATE '45000' SET

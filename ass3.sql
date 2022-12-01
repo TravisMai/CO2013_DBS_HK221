@@ -167,7 +167,7 @@ SET GLOBAL FOREIGN_KEY_CHECKs=0;
         PRIMARY KEY (Syear, Ssn_mentor, Ssn_trainee),
         FOREIGN KEY (Syear) REFERENCES Season(Syear) on delete cascade,
         FOREIGN KEY (Ssn_trainee) REFERENCES Trainee(Ssn) on delete cascade,
-        FOREIGN KEY (Ssn_mentor) REFERENCES MentorMentor(Ssn) on delete cascade    
+        FOREIGN KEY (Ssn_mentor) REFERENCES Mentor(Ssn) on delete cascade    
     );
 
     -- Episode --
