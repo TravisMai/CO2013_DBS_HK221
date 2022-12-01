@@ -13,6 +13,7 @@ There are 3 different folders:
 ![alt text](https://github.com/TravisMai/CO2013_DBS_HK221/blob/main/docu/img/htdocs.png?raw=true)
 * Step 3: Run XAMPP machine. Make sure it function properly as image below
 ![alt text](https://github.com/TravisMai/CO2013_DBS_HK221/blob/main/docu/img/xampp.png?raw=true)
-* Step 4: Go to localhost/phpmyadmin and create database `reality_show`. Then import the `reality_show.sql` to the database `reality_show` you have just create.
+* Step 4: Go to localhost/phpmyadmin and create database `reality_show`. Then copy the code from `reality_show.sql` to the database `reality_show` you have just create. Make sure you have unchecked the `Enable foreign key checks` as the image below:
+![alt text](https://github.com/TravisMai/CO2013_DBS_HK221/blob/main/docu/img/reality_show_db.png?raw=true)
 * Step 5: Go to localhost/show to view our application
 ![alt text](https://github.com/TravisMai/CO2013_DBS_HK221/blob/main/docu/img/localhost_show.png?raw=true)
