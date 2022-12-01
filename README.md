@@ -9,7 +9,7 @@ There are 3 different folders:
 
 ## How to setup the application
 * Step 1: Download XAMPP via this link: https://www.apachefriends.org/download.html
-* Step 2: After download successfully, copy show folder to htdocs folder in your machine
+* Step 2: After download successfully, copy `show` folder to `htdocs` folder in your machine
 ![alt text](https://github.com/TravisMai/CO2013_DBS_HK221/blob/main/docu/img/htdocs.png?raw=true)
 * Step 3: Run XAMPP machine. Make sure it function properly as image below
 ![alt text](https://github.com/TravisMai/CO2013_DBS_HK221/blob/main/docu/img/xampp.png?raw=true)
