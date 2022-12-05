@@ -1,6 +1,10 @@
 # CO2013_DBS_HK221
 Assignments 2 in DBS semester 221
 
+## Login information:
+* Username: sManager
+* Password: shop01
+
 ## Folder contain:
 There are 3 different folders:
 * docu: document and report for the assignment
